@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Subscribe'|trans }}{% endblock %}
+
+{% block body %}
+    {% for success_message in app.flashes('success') %}
+        <p class="flash">{{ success_message|trans }}</p>
+    {% endfor %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">{{ 'Subscribe'|trans }}</button>
+    {{ form_end(form) }}
+
+{% endblock %}

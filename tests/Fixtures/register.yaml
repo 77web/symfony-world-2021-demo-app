@@ -1,0 +1,3 @@
+App\Entity\MagazineReader:
+  reader1:
+    email: 'user@localhost.localdomain'
