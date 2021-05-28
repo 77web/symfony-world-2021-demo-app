@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Domain\Magazine\MagazineReaderInterface;
 use App\Repository\MagazineReaderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=MagazineReaderRepository::class)
  */
-class MagazineReader
+class MagazineReader implements MagazineReaderInterface
 {
     /**
      * @ORM\Id
