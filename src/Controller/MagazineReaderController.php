@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Domain\Magazine\SendThankYouMailFailedException;
+use App\Domain\Magazine\SendThankYouMailInterface;
 use App\Entity\MagazineReader;
 use App\Form\ReaderRegistrationType;
-use App\Service\SendThankYouMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class MagazineReaderController extends AbstractController
 {
     /**
-     * @var SendThankYouMail
+     * @var SendThankYouMailInterface
      */
     private $sendThankYouMail;
 
     /**
      * MagazineReaderController constructor.
-     * @param SendThankYouMail $sendThankYouMail
+     * @param SendThankYouMailInterface $sendThankYouMail
      */
-    public function __construct(SendThankYouMail $sendThankYouMail)
+    public function __construct(SendThankYouMailInterface $sendThankYouMail)
     {
         $this->sendThankYouMail = $sendThankYouMail;
     }

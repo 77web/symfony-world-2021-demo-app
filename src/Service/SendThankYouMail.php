@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Domain\Magazine\SendThankYouMailFailedException;
+use App\Domain\Magazine\SendThankYouMailInterface;
 use App\Entity\MagazineReader;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class SendThankYouMail
+class SendThankYouMail implements SendThankYouMailInterface
 {
     /**
      * @var \Swift_Mailer
