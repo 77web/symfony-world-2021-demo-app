@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\MagazineReader;
 use App\Form\ReaderRegistrationType;
+use App\Service\SendThankYouMail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,17 +14,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class MagazineReaderController extends AbstractController
 {
     /**
-     * @var \Swift_Mailer
+     * @var SendThankYouMail
      */
-    private $mailer;
+    private $sendThankYouMail;
 
     /**
      * MagazineReaderController constructor.
-     * @param \Swift_Mailer $mailer
+     * @param SendThankYouMail $sendThankYouMail
      */
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(SendThankYouMail $sendThankYouMail)
     {
-        $this->mailer = $mailer;
+        $this->sendThankYouMail = $sendThankYouMail;
     }
 
     /**
@@ -42,16 +43,7 @@ class MagazineReaderController extends AbstractController
             $em->persist($readerObj);
             $em->flush();
 
-            // Send thank you mail.
-            $message = new \Swift_Message();
-            $message
-                ->setBody('You have successfully subscribed to our magazine.')
-                ->setSubject('Thank you!')
-                ->setTo($readerObj->getEmail())
-            ;
-            if ($this->mailer->send($message) === 0) {
-                throw new BadRequestHttpException();
-            }
+            $this->sendThankYouMail->sendThankYouMail($readerObj);
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully registered.');
 
