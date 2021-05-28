@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Domain\Magazine\RegisterReaderInterface;
-use App\Domain\Magazine\SendThankYouMailFailedException;
-use App\Domain\Magazine\SendThankYouMailInterface;
+use App\Domain\Magazine\SubscribeToMagazineFailedException;
+use App\Domain\Magazine\SubscribeUseCase;
 use App\Entity\MagazineReader;
 use App\Form\ReaderRegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,24 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class MagazineReaderController extends AbstractController
 {
     /**
-     * @var RegisterReaderInterface
+     * @var SubscribeUseCase
      */
-    private $registerReader;
-
-    /**
-     * @var SendThankYouMailInterface
-     */
-    private $sendThankYouMail;
+    private $subscribeUseCase;
 
     /**
      * MagazineReaderController constructor.
-     * @param RegisterReaderInterface $registerReader
-     * @param SendThankYouMailInterface $sendThankYouMail
+     * @param SubscribeUseCase $subscribeUseCase
      */
-    public function __construct(RegisterReaderInterface $registerReader, SendThankYouMailInterface $sendThankYouMail)
+    public function __construct(SubscribeUseCase $subscribeUseCase)
     {
-        $this->registerReader = $registerReader;
-        $this->sendThankYouMail = $sendThankYouMail;
+        $this->subscribeUseCase = $subscribeUseCase;
     }
 
     /**
@@ -47,13 +39,11 @@ class MagazineReaderController extends AbstractController
             /** @var MagazineReader $readerObj */
             $readerObj = $form->getData();
 
-            $this->registerReader->registerReader($readerObj);
-
-            try {
-                $this->sendThankYouMail->sendThankYouMail($readerObj);
-            } catch (SendThankYouMailFailedException $e) {
-                throw new BadRequestHttpException();
-            }
+           try {
+               $this->subscribeUseCase->subscribeToMagazine($readerObj);
+           } catch (SubscribeToMagazineFailedException $e) {
+               throw new BadRequestHttpException();
+           }
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully registered.');
 
