@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Domain\Magazine\MagazineReaderInterface;
 use App\Domain\Magazine\SendThankYouMailFailedException;
 use App\Domain\Magazine\SendThankYouMailInterface;
-use App\Entity\MagazineReader;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -26,7 +26,7 @@ class SymfonyMailerSendThankYouMail implements SendThankYouMailInterface
         $this->mailer = $mailer;
     }
 
-    public function sendThankYouMail(MagazineReader $readerObj): void
+    public function sendThankYouMail(MagazineReaderInterface $readerObj): void
     {
         $message = new Email();
         $message
