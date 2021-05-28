@@ -6,7 +6,7 @@ namespace App\Tests\Controller;
 use App\Entity\MagazineReader;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\SwiftmailerBundle\DataCollector\MessageDataCollector;
+use Symfony\Component\Mailer\DataCollector\MessageDataCollector;
 
 class MagazineReaderControllerTest extends WebTestCase
 {
@@ -35,8 +35,8 @@ class MagazineReaderControllerTest extends WebTestCase
         $this->assertTrue($response->isRedirect('/'), (string) $response->getStatusCode());
 
         /** @var MessageDataCollector $mailProfile */
-        $mailProfile = $client->getProfile()->getCollector('swiftmailer');
-        $this->assertEquals(1, $mailProfile->getMessageCount());
+        $mailProfile = $client->getProfile()->getCollector('mailer');
+        $this->assertCount(1, $mailProfile->getEvents()->getMessages());
 
         $crawler2 = $client->followRedirect();
         $this->assertEquals('Successfully registered.', $crawler2->filter('p.flash')->text());
