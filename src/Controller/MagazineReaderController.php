@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Domain\Magazine\SendThankYouMailFailedException;
 use App\Entity\MagazineReader;
 use App\Form\ReaderRegistrationType;
 use App\Service\SendThankYouMail;
@@ -43,7 +44,11 @@ class MagazineReaderController extends AbstractController
             $em->persist($readerObj);
             $em->flush();
 
-            $this->sendThankYouMail->sendThankYouMail($readerObj);
+            try {
+                $this->sendThankYouMail->sendThankYouMail($readerObj);
+            } catch (SendThankYouMailFailedException $e) {
+                throw new BadRequestHttpException();
+            }
 
             $this->get('session')->getFlashBag()->add('success', 'Successfully registered.');
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Domain\Magazine\SendThankYouMailFailedException;
 use App\Entity\MagazineReader;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -31,7 +32,7 @@ class SendThankYouMail
             ->setTo($readerObj->getEmail())
         ;
         if ($this->mailer->send($message) === 0) {
-            throw new BadRequestHttpException();
+            throw new SendThankYouMailFailedException();
         }
     }
 }

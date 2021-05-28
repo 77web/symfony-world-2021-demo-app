@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use App\Domain\Magazine\SendThankYouMailFailedException;
 use App\Entity\MagazineReader;
 use App\Service\SendThankYouMail;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class SendThankYouMailTest extends TestCase
 {
@@ -41,7 +41,7 @@ class SendThankYouMailTest extends TestCase
 
     public function testThrowExceptionOnFailedToSendThankYouMail()
     {
-        $this->expectException(BadRequestHttpException::class);
+        $this->expectException(SendThankYouMailFailedException::class);
 
         $reader = new MagazineReader();
         $reader->setEmail($email = 'hello@localhost.localdomain');
