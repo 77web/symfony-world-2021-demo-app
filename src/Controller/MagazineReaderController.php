@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Domain\Magazine\RegisterReaderInterface;
 use App\Domain\Magazine\SendThankYouMailFailedException;
 use App\Domain\Magazine\SendThankYouMailInterface;
 use App\Entity\MagazineReader;
@@ -15,16 +16,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class MagazineReaderController extends AbstractController
 {
     /**
+     * @var RegisterReaderInterface
+     */
+    private $registerReader;
+
+    /**
      * @var SendThankYouMailInterface
      */
     private $sendThankYouMail;
 
     /**
      * MagazineReaderController constructor.
+     * @param RegisterReaderInterface $registerReader
      * @param SendThankYouMailInterface $sendThankYouMail
      */
-    public function __construct(SendThankYouMailInterface $sendThankYouMail)
+    public function __construct(RegisterReaderInterface $registerReader, SendThankYouMailInterface $sendThankYouMail)
     {
+        $this->registerReader = $registerReader;
         $this->sendThankYouMail = $sendThankYouMail;
     }
 
@@ -39,10 +47,7 @@ class MagazineReaderController extends AbstractController
             /** @var MagazineReader $readerObj */
             $readerObj = $form->getData();
 
-            // Save reader obj.
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($readerObj);
-            $em->flush();
+            $this->registerReader->registerReader($readerObj);
 
             try {
                 $this->sendThankYouMail->sendThankYouMail($readerObj);
