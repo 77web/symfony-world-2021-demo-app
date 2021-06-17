@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Form;
 
-use App\Entity\MagazineReader;
+use App\Domain\Magazine\MagazineReader;
 use App\Form\ReaderRegistrationType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
