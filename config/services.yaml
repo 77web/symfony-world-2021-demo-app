@@ -31,3 +31,4 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\Domain\Magazine\SendThankYouMailInterface: '@App\Service\SymfonyMailerSendThankYouMail'
+    App\Domain\Magazine\RegisterReaderInterface: '@App\Service\DoctrineDBALRegisterReader'

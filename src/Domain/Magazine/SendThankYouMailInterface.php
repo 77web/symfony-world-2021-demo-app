@@ -8,8 +8,8 @@ use App\Entity\MagazineReader;
 interface SendThankYouMailInterface
 {
     /**
-     * @param MagazineReader $readerObj
+     * @param MagazineReaderInterface $readerObj
      * @throws SendThankYouMailFailedException
      */
-    public function sendThankYouMail(MagazineReader $readerObj): void;
+    public function sendThankYouMail(MagazineReaderInterface $readerObj): void;
 }
